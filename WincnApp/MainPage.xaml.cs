@@ -1,35 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
 using Windows.ApplicationModel.Resources;
-using Windows.Data.Html;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.Phone.UI.Input;
-using Windows.System.Threading;
 using Windows.UI;
-using Windows.UI.Core;
-using Windows.UI.Popups;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
-using System.Threading;
 // “WebView 应用程序”模板在 http://go.microsoft.com/fwlink/?LinkID=391641 上有介绍
-using App3.Common;
-using HtmlAgilityPack;
 using WincnApp.Core;
 
 namespace WincnApp
@@ -38,7 +18,6 @@ namespace WincnApp
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
 
-        private CoreDispatcher simpleDispatcher;                    // 刷新UI用
         private bool isSlided = false;                              // 侧边状态
         private int page = 1;                                       // 当前页
         private ObservableCollection<ArticleItems> _articleList;    // 文件列表
@@ -52,7 +31,6 @@ namespace WincnApp
             this.InitializeComponent();
             this.NavigationCacheMode = NavigationCacheMode.Required;
             LoadBindingContent();
-            simpleDispatcher = Window.Current.Dispatcher;
             LoadStatusBar();
 
         }
@@ -129,26 +107,10 @@ namespace WincnApp
         /// <param name="url"></param>
         private void LoadHtmlContent(string url)
         {
-            ProgressBar.Visibility = Visibility.Visible;
-            new Task(() =>
-            {
-                HtmlHelper.CreateInstance().httpGet(url);
-                while (true)
-                {
-                    string html = HtmlHelper.HtmlString;
-                    if (!string.IsNullOrEmpty(html))
-                    {
-                        simpleDispatcher.RunAsync(CoreDispatcherPriority.High, () =>
-                        {
-                            HtmlDocument document = new HtmlDocument();
-                            document.LoadHtml(html);
-                            AnewHelper.IndexItemParse(ArticleLists, document);
-                        });
-                        break;
-                    }
-                    ProgressBar.Visibility = Visibility.Collapsed;
-                }
-            }).Start();
+            MyProgressRing.IsActive = true;
+            var indexHtmlHelper = new IndexHtmlHelper(MyProgressRing, ArticleLists);
+            indexHtmlHelper.HttpGet(url);
+           
             page++;//继续加载下一页
         }
 

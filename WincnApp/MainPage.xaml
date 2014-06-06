@@ -100,11 +100,11 @@
                     </ListView>
                 </ScrollViewer>
             </Grid>
+            <Grid  Grid.Row="1">
+                <ProgressRing IsActive="False" Name="MyProgressRing"></ProgressRing>
+            </Grid>
         </Grid>
-
-        <Grid Grid.Row="0" Name="ProgressBar">
-            <ProgressBar  VerticalAlignment="Center"  IsIndeterminate="True"></ProgressBar>
-        </Grid>
+        
     </Grid>
 
     <Page.BottomAppBar>

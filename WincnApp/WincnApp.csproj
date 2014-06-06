@@ -90,6 +90,7 @@
     <Compile Include="Core\AnewHelper.cs" />
     <Compile Include="Core\AppUtils.cs" />
     <Compile Include="Core\HtmlHelper.cs" />
+    <Compile Include="Core\IndexHtmlHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>

@@ -9,31 +9,18 @@ using Windows.UI.Popups;
 
 namespace WincnApp.Core
 {
-    class HtmlHelper
+    public abstract class HtmlHelper
     {
 
-        private static HtmlHelper _instance;
-        private static string htmlString;
-
-        private HtmlHelper() { }
+        private static string _htmlString;
 
         public static string HtmlString
         {
-            get { return htmlString; }
-            set { htmlString = value; }
+            get { return _htmlString; }
+            set { _htmlString = value; }
         }
 
-        public static HtmlHelper CreateInstance()
-        {
-            if (_instance == null)
-            {
-                _instance = new HtmlHelper();
-            }
-            return _instance;
-        }
-
-
-        public void httpGet(string url)
+        public void HttpGet(string url)
         {
 
             //创建WebRequest类
@@ -41,11 +28,11 @@ namespace WincnApp.Core
             //设置请求方式GET POST
             request.Method = "GET";
             //返回应答请求异步操作的状态                
-            request.BeginGetResponse(responseCallback, request);
+            request.BeginGetResponse(ResponseCallback, request);
 
         }
 
-        private void responseCallback(IAsyncResult result)
+        private void ResponseCallback(IAsyncResult result)
         {
             try
             {
@@ -67,7 +54,8 @@ namespace WincnApp.Core
                 {
                     //获取请求信息
                     StreamReader read = new StreamReader(stream);
-                    htmlString = read.ReadToEnd();
+                    HtmlString = read.ReadToEnd();
+                    HtmlHandler(HtmlString);
                 }
 
             }
@@ -81,5 +69,11 @@ namespace WincnApp.Core
             }
 
         }
+
+        /// <summary>
+        /// 获取html后处理
+        /// </summary>
+        /// <param name="html"></param>
+        protected abstract void HtmlHandler(string html);
     }
 }
