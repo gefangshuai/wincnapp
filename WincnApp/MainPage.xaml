@@ -13,14 +13,14 @@
                              Storyboard.TargetName="PlaneProjection"  
                              Storyboard.TargetProperty="LocalOffsetX" 
                              From="0"
-                             To="-80"></DoubleAnimation>
+                             To="-260"></DoubleAnimation>
         </Storyboard>
 
         <Storyboard x:Name="StoryboardRight">
             <DoubleAnimation Duration="0:0:0.3" 
                              Storyboard.TargetName="PlaneProjection"  
                              Storyboard.TargetProperty="LocalOffsetX" 
-                             From="-80"
+                             From="-260"
                              To="0"></DoubleAnimation>
         </Storyboard>
 
@@ -30,17 +30,106 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="{ThemeResource ContentDialogBackgroundThemeBrush}"/>
+        <Grid Grid.Row="0" Background="{ThemeResource ContentDialogBackgroundThemeBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="260"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="1">
+                <TextBlock HorizontalAlignment="Center" 
+                           Margin="0 50 0 0"
+                           Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">
+                    文章分类
+                </TextBlock>
+                <ListView SelectionChanged="Selector_OnSelectionChanged" Name="MySlideListView">
+                    <ListViewItem BorderBrush="Black" BorderThickness="0 3 0 0"
+                                  Tag="http://wincn.net/,首页">
+                        <StackPanel Orientation="Horizontal" Margin="20 15">
+                            <AppBarButton HorizontalAlignment="Left" 
+                                          VerticalAlignment="Bottom"
+                                          IsCompact="True"
+                                          Width="50"
+                                          Height="50" Icon="Home" FontSize="10"
+                                          />
+                            <TextBlock VerticalAlignment="Bottom" Margin="20 0 0 0"
+                                       Style="{StaticResource ListViewItemTextBlockStyle}">
+                                首页
+                            </TextBlock>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Tag="http://wincn.net/category/java/,Java开发">
+                        <StackPanel Orientation="Horizontal" Margin="20 15">
+                            <AppBarButton HorizontalAlignment="Left" 
+                                          VerticalAlignment="Bottom"
+                                          IsCompact="True"
+                                          Width="50"
+                                          Height="50" Icon="AllApps" FontSize="10"
+                                          />
+                            <TextBlock VerticalAlignment="Bottom" Margin="20 0 0 0"
+                                       Style="{StaticResource ListViewItemTextBlockStyle}" Text="Java开发"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Tag="http://wincn.net/category/c/,C#核心">
+                        <StackPanel Orientation="Horizontal" Margin="20 15">
+                            <AppBarButton HorizontalAlignment="Left" 
+                                          VerticalAlignment="Bottom"
+                                          IsCompact="True"
+                                          Width="50"
+                                          Height="50" Icon="AllApps" FontSize="10"
+                                          />
+                            <TextBlock VerticalAlignment="Bottom" Margin="20 0 0 0"
+                                       Style="{StaticResource ListViewItemTextBlockStyle}" Text="C#核心"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Tag="http://wincn.net/category/database/,DB技术">
+                        <StackPanel Orientation="Horizontal" Margin="20 15">
+                            <AppBarButton HorizontalAlignment="Left" 
+                                          VerticalAlignment="Bottom"
+                                          IsCompact="True"
+                                          Width="50"
+                                          Height="50" Icon="AllApps" FontSize="10"
+                                          />
+                            <TextBlock VerticalAlignment="Bottom" Margin="20 0 0 0"
+                                       Style="{StaticResource ListViewItemTextBlockStyle}" Text="DB技术"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Tag="http://wincn.net/category/open-open/,开源项目">
+                        <StackPanel Orientation="Horizontal" Margin="20 15">
+                            <AppBarButton HorizontalAlignment="Left" 
+                                          VerticalAlignment="Bottom"
+                                          IsCompact="True"
+                                          Width="50"
+                                          Height="50" Icon="AllApps" FontSize="10"
+                                          />
+                            <TextBlock VerticalAlignment="Bottom" Margin="20 0 0 0"
+                                       Style="{StaticResource ListViewItemTextBlockStyle}" Text="开源项目"/>
+                        </StackPanel>
+                    </ListViewItem>
+                    <ListViewItem Tag="http://wincn.net/category/exception/,异常处理">
+                        <StackPanel Orientation="Horizontal" Margin="20 15">
+                            <AppBarButton HorizontalAlignment="Left" 
+                                          VerticalAlignment="Bottom"
+                                          IsCompact="True"
+                                          Width="50"
+                                          Height="50" Icon="AllApps" FontSize="10"
+                                          />
+                            <TextBlock VerticalAlignment="Bottom" Margin="20 0 0 0"
+                                       Style="{StaticResource ListViewItemTextBlockStyle}" Text="异常处理"/>
+                        </StackPanel>
+                    </ListViewItem>
+                </ListView>
+            </StackPanel>
+        </Grid>
 
         <Grid Grid.Row="0" Background="Black"  ManipulationDelta="UIElement_OnManipulationDelta">
             <Grid.Projection>
                 <PlaneProjection x:Name="PlaneProjection"></PlaneProjection>
             </Grid.Projection>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="75"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="DodgerBlue">
+            <Border Grid.Row="0" BorderThickness="0,0,0,3" BorderBrush="DodgerBlue">
                 <Grid Margin="12 0 0 12" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -48,14 +137,16 @@
                     </Grid.ColumnDefinitions>
                     
                     <TextBlock x:Name="AppTitle" FontSize="36" 
-                               VerticalAlignment="Center" 
+                               VerticalAlignment="Bottom" 
                                HorizontalAlignment="Left"
                                Text="{Binding CurrentCategory}"
                                Grid.Column="0"></TextBlock>
-                    <AppBarButton VerticalAlignment="Center" 
+                    <AppBarButton VerticalAlignment="Bottom" 
                                   Name="SlideAppBarButton"
+                                  Margin="0 20 10 0"
+                                  IsCompact="True"
                                   Tapped="SlideAppBarButton_OnTapped"
-                                  Grid.Column="1" Height="60" Icon="List" HorizontalAlignment="Center"/>
+                                  Grid.Column="1" Height="50" Icon="List" HorizontalAlignment="Center"/>
                 </Grid>
             </Border>
             <Grid Grid.Row="1">
@@ -100,15 +191,13 @@
                     </ListView>
                 </ScrollViewer>
             </Grid>
-            <Grid  Grid.Row="1">
-                <ProgressRing IsActive="False" Name="MyProgressRing"></ProgressRing>
-            </Grid>
+            <ProgressRing Grid.Row="1" IsActive="False" Name="MyProgressRing"></ProgressRing>
         </Grid>
         
     </Grid>
 
     <Page.BottomAppBar>
-        <CommandBar ClosedDisplayMode="Minimal">
+        <CommandBar ClosedDisplayMode="Minimal" Background="DodgerBlue">
             <CommandBar.PrimaryCommands>
                 <AppBarButton
                     x:Name="ForwardAppBarButton"

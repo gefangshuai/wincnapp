@@ -18,10 +18,11 @@ namespace WincnApp
     public sealed partial class MainPage : Page, INotifyPropertyChanged
     {
 
-        private bool isSlided = false;                              // 侧边状态
+        private bool _isSlided = false;                              // 侧边状态
         private int page = 1;                                       // 当前页
         private ObservableCollection<ArticleItems> _articleList;    // 文件列表
-        private StatusBar statusBar;                                // 状态栏
+        private StatusBar _statusBar;                                // 状态栏
+        private string _currentUrl = "http://wincn.net/";
 
         private string _currentCategory;
 
@@ -48,14 +49,14 @@ namespace WincnApp
         /// </summary>
         private void LoadStatusBar()
         {
-            statusBar = StatusBar.GetForCurrentView();
+            _statusBar = StatusBar.GetForCurrentView();
             // 显示StatusBar
-            statusBar.ShowAsync();
-            statusBar.BackgroundColor = Colors.DodgerBlue;
-            statusBar.BackgroundOpacity = 1;
-            statusBar.ProgressIndicator.Text = new ResourceLoader().GetString("AppName");
-            statusBar.ProgressIndicator.ShowAsync();
-            statusBar.ProgressIndicator.ProgressValue = 0;
+            _statusBar.ShowAsync();
+            _statusBar.BackgroundColor = Colors.DodgerBlue;
+            _statusBar.BackgroundOpacity = 1;
+            _statusBar.ProgressIndicator.Text = new ResourceLoader().GetString("AppName");
+            _statusBar.ProgressIndicator.ShowAsync();
+            _statusBar.ProgressIndicator.ProgressValue = 0;
 
             // 隐藏StatusBar
             // await statusBar.HideAsync();
@@ -97,7 +98,7 @@ namespace WincnApp
         {
             ArticleLists = new ObservableCollection<ArticleItems>();
 
-            LoadHtmlContent("http://wincn.net/");
+            LoadHtmlContent(_currentUrl);
 
         }
 
@@ -129,7 +130,7 @@ namespace WincnApp
         /// <param name="e"></param>
         private void SlideAppBarButton_OnTapped(object sender, TappedRoutedEventArgs e)
         {
-            if (!isSlided)
+            if (!_isSlided)
             {
                 StoryboardLeft.Begin();
             }
@@ -137,7 +138,7 @@ namespace WincnApp
             {
                 StoryboardRight.Begin();
             }
-            isSlided = !isSlided;
+            _isSlided = !_isSlided;
         }
 
         private void UIElement_OnManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
@@ -145,14 +146,24 @@ namespace WincnApp
             double tx = e.Delta.Translation.X;
             if (tx < 0)
             {
-                StoryboardLeft.Begin();
-                isSlided = true;
+                slideOn();
             }
             else
             {
-                StoryboardRight.Begin();
-                isSlided = false;
+                slideOff();
             }
+        }
+
+        private void slideOff()
+        {
+            StoryboardRight.Begin();
+            _isSlided = false;
+        }
+
+        private void slideOn()
+        {
+            StoryboardLeft.Begin();
+            _isSlided = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -163,8 +174,20 @@ namespace WincnApp
             double factHeight = MyScrollViewer.ActualHeight + MyScrollViewer.VerticalOffset;
             if (totalHeight.Equals(factHeight))
             {
-                LoadHtmlContent(String.Format("http://wincn.net/page/{0}/", page));
+                LoadHtmlContent(String.Format("{0}page/{1}/",_currentUrl, page));
             }
+        }
+
+        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            page = 1;
+            var listViewItem = MySlideListView.SelectedItem as ListViewItem;
+            string[] infos = listViewItem.Tag.ToString().Split(',');
+            _currentUrl = infos[0];
+            CurrentCategory = infos[1];
+            ArticleLists = new ObservableCollection<ArticleItems>();    //清空当前列表
+            LoadHtmlContent(_currentUrl);
+            slideOff();
         }
     }
 }
