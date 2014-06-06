@@ -30,10 +30,9 @@
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Background="DodgerBlue">
-        </Grid>
+        <Grid Grid.Row="0" Background="{ThemeResource ContentDialogBackgroundThemeBrush}"/>
 
-        <Grid Grid.Row="0" Background="Black">
+        <Grid Grid.Row="0" Background="Black"  ManipulationDelta="UIElement_OnManipulationDelta">
             <Grid.Projection>
                 <PlaneProjection x:Name="PlaneProjection"></PlaneProjection>
             </Grid.Projection>
@@ -42,14 +41,17 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Border Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="DodgerBlue">
-                <Grid Margin="0 0 0 10" >
+                <Grid Margin="12 0 0 12" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock FontSize="36" VerticalAlignment="Center" 
-                               HorizontalAlignment="Center"
-                               Grid.Column="0">Wincn开发网</TextBlock>
+                    
+                    <TextBlock x:Name="AppTitle" FontSize="36" 
+                               VerticalAlignment="Center" 
+                               HorizontalAlignment="Left"
+                               Text="{Binding CurrentCategory}"
+                               Grid.Column="0"></TextBlock>
                     <AppBarButton VerticalAlignment="Center" 
                                   Name="SlideAppBarButton"
                                   Tapped="SlideAppBarButton_OnTapped"
@@ -57,21 +59,51 @@
                 </Grid>
             </Border>
             <Grid Grid.Row="1">
-                <ItemsControl Name="MyItemsControl" ItemsSource="{Binding MyItems}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Border BorderBrush="DodgerBlue" BorderThickness="0 0 0 1">
-                                <Grid Background="DeepSkyBlue">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                </Grid>
-                            </Border>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
+                <ScrollViewer Name="MyScrollViewer">
+                    <ListView Name="MyListView" ItemsSource="{Binding ArticleLists}" LayoutUpdated="MyListView_OnLayoutUpdated">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="12">
+                                    <Border BorderBrush="DodgerBlue" BorderThickness="3 0 0 0">
+                                        <StackPanel Margin="12 0 0 0">
+                                            <TextBlock Text="{Binding Title}" FontSize="25" Style="{StaticResource ListViewItemTextBlockStyle}"
+                                                    TextWrapping="Wrap"
+                                                    Tag="{Binding Link}"></TextBlock>
+                                            <TextBlock TextWrapping="Wrap" 
+                                                   Text="{Binding Summary}"
+                                                   Style="{StaticResource ListViewItemContentTextBlockStyle}">
+                                            </TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}">
+                                                分类:
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding Category}" 
+                                                Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"></TextBlock>
+                                                <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"
+                                                       Margin="20 0 0 0">
+                                                        日期:
+                                                </TextBlock>
+                                                <TextBlock Text="{Binding CreateDate}" 
+                                                       Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"></TextBlock>
+                                                <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"
+                                                       Margin="20 0 0 0">
+                                                评论:
+                                                </TextBlock>
+                                                <TextBlock Style="{StaticResource ListViewItemSubheaderTextBlockStyle}"
+                                                       Text="{Binding CommentCount}"></TextBlock>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </ScrollViewer>
             </Grid>
+        </Grid>
+
+        <Grid Grid.Row="0" Name="ProgressBar">
+            <ProgressBar  VerticalAlignment="Center"  IsIndeterminate="True"></ProgressBar>
         </Grid>
     </Grid>
 
