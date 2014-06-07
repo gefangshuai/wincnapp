@@ -91,6 +91,7 @@
     <Compile Include="Core\AppUtils.cs" />
     <Compile Include="Core\HtmlHelper.cs" />
     <Compile Include="Core\IndexHtmlHelper.cs" />
+    <Compile Include="DataModel\SampleDataSource.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -131,6 +132,9 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\..\..\sdk\HtmlAgilityPack\winrt45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DataModel\SampleData.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

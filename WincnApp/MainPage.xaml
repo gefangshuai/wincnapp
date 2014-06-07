@@ -129,7 +129,7 @@
                 <RowDefinition Height="75"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <Border Grid.Row="0" BorderThickness="0,0,0,3" BorderBrush="DodgerBlue">
+            <Border Grid.Row="0" BorderThickness="0,0,0,3"  BorderBrush="DodgerBlue">
                 <Grid Margin="12 0 0 12" >
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"></ColumnDefinition>
@@ -151,12 +151,13 @@
             </Border>
             <Grid Grid.Row="1">
                 <ScrollViewer Name="MyScrollViewer">
-                    <ListView Name="MyListView" ItemsSource="{Binding ArticleLists}" LayoutUpdated="MyListView_OnLayoutUpdated">
+                    <ListView Name="MyListView" 
+                              ItemsSource="{Binding ArticleLists}" LayoutUpdated="MyListView_OnLayoutUpdated">
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <StackPanel Margin="12">
-                                    <Border BorderBrush="DodgerBlue" BorderThickness="3 0 0 0">
-                                        <StackPanel Margin="12 0 0 0">
+                                <StackPanel>
+                                    <Border Margin="0 12" BorderBrush="DodgerBlue" BorderThickness="3 0 0 0">
+                                        <StackPanel Margin="12 0">
                                             <TextBlock Text="{Binding Title}" FontSize="25" Style="{StaticResource ListViewItemTextBlockStyle}"
                                                     TextWrapping="Wrap"
                                                     Tag="{Binding Link}"></TextBlock>

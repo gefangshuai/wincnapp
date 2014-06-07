@@ -53,6 +53,7 @@ namespace WincnApp
             // 显示StatusBar
             _statusBar.ShowAsync();
             _statusBar.BackgroundColor = Colors.DodgerBlue;
+            _statusBar.ForegroundColor = Colors.White;
             _statusBar.BackgroundOpacity = 1;
             _statusBar.ProgressIndicator.Text = new ResourceLoader().GetString("AppName");
             _statusBar.ProgressIndicator.ShowAsync();
